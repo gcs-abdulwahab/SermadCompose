@@ -13,6 +13,28 @@
         android:theme="@style/Theme.SermadComposeApplication"
         tools:targetApi="31">
         <activity
+            android:name=".ExplicitIntentActivity"
+            android:exported="true"
+            android:label="@string/title_activity_explicit_intent"
+            android:theme="@style/Theme.SermadComposeApplication">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".WeatherApp"
+            android:exported="true"
+            android:label="@string/title_activity_weather_app"
+            android:theme="@style/Theme.SermadComposeApplication">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".SecondActivity"
             android:exported="true"
             android:label="@string/title_activity_second"

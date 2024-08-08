@@ -1,10 +1,11 @@
 package com.example.sermadcomposeapplication
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -16,16 +17,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.sermadcomposeapplication.ui.theme.SermadComposeApplicationTheme
 
-class SecondActivity : ComponentActivity() {
+class ExplicitIntentActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             SermadComposeApplicationTheme {
-                Surface(
-                    color = Color.Blue,
-                    modifier = Modifier.fillMaxSize()
-                ) {
+                Surface(color = Color.Red,
+                    onClick = {
+                        Log.d("ExplicitIntent", "Button clicked!")
+                        Intent(this, SecondActivity::class.java).also {
+                            startActivity(it)
+                            finish()
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()) {
 
                 }
             }
@@ -33,18 +40,3 @@ class SecondActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SermadComposeApplicationTheme {
-        Greeting("Android")
-    }
-}
