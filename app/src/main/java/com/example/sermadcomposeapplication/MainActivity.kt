@@ -1,6 +1,6 @@
 package com.example.sermadcomposeapplication
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,10 +9,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sermadcomposeapplication.ui.theme.SermadComposeApplicationTheme
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 class MainActivity : ComponentActivity() {
 
@@ -23,7 +31,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SermadComposeApplicationTheme {
-                ComponentA ()
+                ComponentA()
 
             }
         }
@@ -31,14 +39,32 @@ class MainActivity : ComponentActivity() {
 
 }
 
+
+class ColorViewModel : ViewModel() {
+
+    var colorFlow = MutableStateFlow(Color.Blue)
+    fun changeColor() {
+        colorFlow.update { getRandomColor() }
+    }
+
+    private fun getRandomColor(): Color {
+        val colors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow)
+        return colors.random()
+    }
+
+}
+
 @Composable
-private fun ComponentA() {
-     val context = LocalContext.current
-    Surface(color = Color.Yellow, modifier = Modifier
+private fun ComponentA(vm: ColorViewModel = viewModel()) {
+
+    val flowColor by vm.colorFlow.collectAsState()
+
+    Surface(color = flowColor, modifier = Modifier
         .fillMaxSize()
         .clickable {
-                 Intent (context, SecondActivity::class.java).also{
-                     context.startActivity(it)
-                 }
+            vm.changeColor()
         }) {}
 }
+
+
+
